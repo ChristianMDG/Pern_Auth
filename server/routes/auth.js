@@ -1,9 +1,9 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import { jwt } from 'jsonwebtoken';
-import { pool } from '../db.js';
-import { use } from 'react';
+import jwt  from 'jsonwebtoken';
+
 import { protect } from '../middlewares/auth.js';
+import pool from '../config/db.js';
 
 const router = express.Router();
 const cookieOptions = {
