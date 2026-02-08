@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { jwt } from 'jsonwebtoken';
 import { pool } from '../db.js';
 import { use } from 'react';
+import { protect } from '../middlewares/auth.js';
 
 const router = express.Router();
 const cookieOptions = {
@@ -19,9 +20,9 @@ const generateToken = (id) => {
 }
 
 router.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
     
-    if (!username || !email || !password) {
+    if (!name || !email || !password) {
         return res.status(400).json({ message: 'Please provide all fields' });
     }
  
@@ -34,8 +35,8 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         
         const newUser = await pool.query(
-            'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email',
-            [username, email, hashedPassword]
+            'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
+            [name, email, hashedPassword]
         ); 
        
         const token = generateToken(newUser.rows[0].id);
@@ -74,8 +75,8 @@ router.post('/logout', (req, res) => {
     return res.status(200).json({ message: 'Logged out successfully' });
 });
 
-router.get('/me', async (req, res) => {
-   res.json({ message: 'This is the protected route' });
+router.get('/me',protect, async (req, res) => {
+   res.json({ user: req.user });
    
 });
 
