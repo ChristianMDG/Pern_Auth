@@ -16,7 +16,7 @@ function Login({setUser}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {  
-        const res = await axios.post("http://localhost:5000/api/auth/login", form);
+        const res = await axios.post("/api/auth/login", form);
         setUser(res.data);
         navigate("/");
     } catch (err) {

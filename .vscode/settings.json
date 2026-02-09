@@ -6,7 +6,7 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "Pern_auth_db",
+            "name": "pern_auth",
             "database": "pern_auth",
             "username": "christian"
         }
